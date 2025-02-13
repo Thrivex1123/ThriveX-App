@@ -1,0 +1,11 @@
+ThriveX-App/
+│── thrivex_app.py       # Your main Streamlit app file
+│── requirements.txt     # Dependencies
+│── README.md           # Project details
+│── .streamlit/
+│   ├── secrets.toml     # Store API keys (DO NOT COMMIT)
+│── deployment/
+│   ├── Dockerfile       # Optional for advanced hosting
+│   ├── Procfile         # For Heroku deployment (optional)
+│── config/
+│   ├── env_variables.py # Environment variables for security
