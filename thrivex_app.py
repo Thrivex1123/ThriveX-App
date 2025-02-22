@@ -75,7 +75,8 @@ if "referral_code" not in st.session_state or not st.session_state["referral_cod
     st.session_state["referral_code"] = generate_referral_code()
 
 st.text_input("Your Referral Code:", value=st.session_state["referral_code"], disabled=True)
-if st.button("Copy Referral Code", key="copy_referral"):
+if st.button("Copy Referral Code", key=f"copy_referral_{st.session_state['referral_code']}"):
+
     st.session_state["copied_code"] = st.session_state["referral_code"]
     st.success(f"Referral code copied! Share it with friends: {st.session_state['copied_code']}")
     try:
