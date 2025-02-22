@@ -75,10 +75,16 @@ if "referral_code" not in st.session_state or not st.session_state["referral_cod
     st.session_state["referral_code"] = generate_referral_code()
 
 st.text_input("Your Referral Code:", value=st.session_state["referral_code"], disabled=True)
+import pyperclip  # Library for copying to clipboard (optional)
 
-if st.button("Copy Referral Code"):
+if st.button("Copy Referral Code", key="copy_referral"):
     st.session_state["copied_code"] = st.session_state["referral_code"]
     st.success(f"Referral code copied! Share it with friends: {st.session_state['copied_code']}")
+    try:
+        pyperclip.copy(st.session_state["copied_code"])  # Copy to clipboard
+    except:
+        pass  # If running on a server without clipboard support
+
 if st.button("Copy Referral Code"):
     st.success("Referral code copied! Share it with friends.")
 
