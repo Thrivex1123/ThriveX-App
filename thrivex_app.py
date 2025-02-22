@@ -63,7 +63,22 @@ st.write("Your AI-powered transformation hub. Real-time coaching, emotional diag
 # Referral Program
 st.subheader("🎁 Refer & Earn Rewards!")
 st.write("Invite friends and earn a **10% discount** on your next month for every successful referral!")
-st.session_state["referral_code"] = st.text_input("Your Referral Code:", value="THRIVEX-" + st.session_state["user_email"].split("@")[0] if st.session_state["user_email"] else "")
+import random
+import string
+
+# Function to generate a short referral code
+def generate_referral_code():
+    return "THRIVEX-" + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
+# Generate a referral code if not already created
+if "referral_code" not in st.session_state or not st.session_state["referral_code"]:
+    st.session_state["referral_code"] = generate_referral_code()
+
+st.text_input("Your Referral Code:", value=st.session_state["referral_code"], disabled=True)
+
+if st.button("Copy Referral Code"):
+    st.session_state["copied_code"] = st.session_state["referral_code"]
+    st.success(f"Referral code copied! Share it with friends: {st.session_state['copied_code']}")
 if st.button("Copy Referral Code"):
     st.success("Referral code copied! Share it with friends.")
 
