@@ -59,7 +59,6 @@ def send_email(subject, body, recipient):
 # ThriveX Branding
 st.title("🚀 ThriveX - The Future of Healing & Self-Mastery")
 st.write("Your AI-powered transformation hub. Real-time coaching, emotional diagnostics, and immersive healing experiences.")
-
 import random
 import string
 import pyperclip  # Import pyperclip for copying
@@ -95,8 +94,6 @@ if st.button("Apply Referral Code"):
     
     else:
         st.error("❌ Invalid referral code. Make sure it's correctly entered.")
-
-
 
 # Subscription Model
 st.subheader("💳 ThriveX Subscription Plan")
