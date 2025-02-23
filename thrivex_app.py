@@ -97,12 +97,20 @@ if st.button("Copy Referral Code"):
 
 # Track referrals
 referred_by = st.text_input("Enter Referral Code (if any):")
+
 if st.button("Apply Referral Code"):
-    if referred_by.startswith("THRIVEX-") and referred_by != st.session_state["referral_code"]:
+    # Prevent self-referral
+    if referred_by == st.session_state["referral_code"]:
+        st.error("❌ You cannot use your own referral code.")
+    
+    # Validate format & store successful referrals
+    elif referred_by.startswith("THRIVEX-"):
         st.session_state["referral_count"] += 1
-        st.success("✅ Referral code applied! You and your referrer both earn a 10% discount.")
+        st.success(f"✅ Referral code applied! You and your referrer both earn a 10% discount.")
+    
     else:
-        st.error("❌ Invalid referral code.")
+        st.error("❌ Invalid referral code. Make sure it's correctly entered.")
+
 
 # Subscription Model
 st.subheader("💳 ThriveX Subscription Plan")
