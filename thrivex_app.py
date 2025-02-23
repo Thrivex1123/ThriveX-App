@@ -60,11 +60,9 @@ def send_email(subject, body, recipient):
 st.title("🚀 ThriveX - The Future of Healing & Self-Mastery")
 st.write("Your AI-powered transformation hub. Real-time coaching, emotional diagnostics, and immersive healing experiences.")
 
-# Referral Program
-st.subheader("🎁 Refer & Earn Rewards!")
-st.write("Invite friends and earn a **10% discount** on your next month for every successful referral!")
 import random
 import string
+import pyperclip  # Import pyperclip for copying
 
 # Function to generate a short referral code
 def generate_referral_code():
@@ -74,26 +72,13 @@ def generate_referral_code():
 if "referral_code" not in st.session_state or not st.session_state["referral_code"]:
     st.session_state["referral_code"] = generate_referral_code()
 
-st.text_input("Your Referral Code:", value=st.session_state["referral_code"], disabled=True)
-if st.button("Copy Referral Code", key=f"copy_referral_{st.session_state['referral_code']}"):
+# Display referral code inside a text input (read-only)
+st.text_input("Your Referral Code:", value=st.session_state["referral_code"], key="referral_display", disabled=True)
 
-    st.session_state["copied_code"] = st.session_state["referral_code"]
-    st.success(f"Referral code copied! Share it with friends: {st.session_state['copied_code']}")
-    try:
-        pyperclip.copy(st.session_state["copied_code"])  # Copy to clipboard
-    except:
-        pass  # If running on a server without clipboard support
-
-if st.button("Copy Referral Code", key="copy_referral"):
-    st.session_state["copied_code"] = st.session_state["referral_code"]
-    st.success(f"Referral code copied! Share it with friends: {st.session_state['copied_code']}")
-    try:
-        pyperclip.copy(st.session_state["copied_code"])  # Copy to clipboard
-    except:
-        pass  # If running on a server without clipboard support
-
+# Single Copy Button
 if st.button("Copy Referral Code"):
-    st.success("Referral code copied! Share it with friends.")
+    pyperclip.copy(st.session_state["referral_code"])  # Copies only the referral code
+    st.success(f"Referral code copied: {st.session_state['referral_code']}")
 
 # Track referrals
 referred_by = st.text_input("Enter Referral Code (if any):")
@@ -110,6 +95,7 @@ if st.button("Apply Referral Code"):
     
     else:
         st.error("❌ Invalid referral code. Make sure it's correctly entered.")
+
 
 
 # Subscription Model
