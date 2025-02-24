@@ -178,6 +178,17 @@ import streamlit as st
 import openai
 import random
 
+# Function to generate a daily affirmation
+def get_affirmation():
+    affirmations = [
+        "You are strong and capable of overcoming any obstacle.",
+        "You are enough, just as you are.",
+        "Every day, you are getting better and stronger.",
+        "Your potential is limitless, and you can achieve anything.",
+        "You are worthy of love, happiness, and success."
+    ]
+    return random.choice(affirmations)
+
 import openai
 
 # Set your OpenAI API Key
