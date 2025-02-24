@@ -174,3 +174,65 @@ plt.grid(True)
 
 # Display the plot in Streamlit
 st.pyplot(fig)
+import streamlit as st
+import openai
+import random
+
+# Set OpenAI API Key
+openai.api_key = "YOUR_OPENAI_API_KEY"  # Replace with your OpenAI API key
+
+# Function to get AI-generated affirmations
+def get_affirmation():
+    affirmations = [
+        "You are strong and capable of overcoming any obstacle.",
+        "You are enough, just as you are.",
+        "Every day, you are getting better and stronger.",
+        "Your potential is limitless, and you can achieve anything.",
+        "You are worthy of love, happiness, and success."
+    ]
+    return random.choice(affirmations)
+
+# Function for mood tracking
+def analyze_mood(mood):
+    responses = {
+        "Happy": "That's amazing! Keep spreading positivity! 😊",
+        "Sad": "I'm here for you. Try taking deep breaths and reminding yourself of good times. 💙",
+        "Stressed": "It's okay to take a break. Try meditating for a few minutes. 🧘‍♂️",
+        "Motivated": "Keep that energy! Go crush your goals! 🚀",
+        "Tired": "Your body is telling you to rest. Don't ignore it. 😴",
+    }
+    return responses.get(mood, "Your feelings are valid. Keep going. 💖")
+
+# Function for AI chat interaction
+def chat_with_ai(user_input):
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": user_input}]
+    )
+    return response["choices"][0]["message"]["content"]
+
+# 🎯 Add ThriveX Functionalities
+st.title("🚀 ThriveX - AI Healing & Self-Mastery")
+
+# Daily Affirmation
+st.subheader("🌟 Daily Affirmation")
+affirmation = get_affirmation()
+st.write(f"✨ **{affirmation}** ✨")
+
+# Mood Tracking Section
+st.subheader("🧠 How Are You Feeling Today?")
+mood = st.selectbox("Select your current mood:", ["Happy", "Sad", "Stressed", "Motivated", "Tired"])
+if st.button("Analyze Mood"):
+    mood_response = analyze_mood(mood)
+    st.success(mood_response)
+
+# AI Chat Section
+st.subheader("💬 Talk to ThriveX AI")
+user_message = st.text_input("Type your message:")
+if st.button("Send Message"):
+    if user_message:
+        ai_response = chat_with_ai(user_message)
+        st.write(f"🤖 AI: {ai_response}")
+    else:
+        st.error("Please type a message first.")
+
