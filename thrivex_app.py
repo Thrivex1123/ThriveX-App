@@ -148,3 +148,48 @@ st.subheader("🚀 Be the First to Experience ThriveX")
 st.session_state["user_email"] = st.text_input("Enter your email to join the beta waitlist and receive notifications:")
 if st.button("Join Now"):
     st.success("You're on the list! ThriveX Beta launch details will be sent soon.")
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Add a new section in ThriveX for the comparison
+st.subheader("📊 Financial Stress vs. Quality of Life: Therapy Models")
+
+# Create user input for customization
+duration = st.slider("Select Therapy Duration (in years)", min_value=1, max_value=10, value=5)
+
+# Generate time progression based on user selection
+time = np.linspace(0, duration, 100)
+
+# Define trajectories for traditional therapy
+financial_stress_traditional = np.exp(0.3 * time)  # Steep financial stress increase
+quality_of_life_traditional = np.log(time + 1) * 5  # Slow increase, then plateau
+
+# Define trajectories for cost-effective therapy
+financial_stress_cost_effective = np.exp(-0.05 * time) + 1  # Low and stable
+quality_of_life_cost_effective = np.log(time + 1) * 10  # Steady increase
+
+# Create figure and axis
+fig, ax1 = plt.subplots(figsize=(8, 5))
+
+# Plot financial stress for both therapy models
+ax1.plot(time, financial_stress_traditional, 'r-', label="Financial Stress (Traditional)")
+ax1.plot(time, financial_stress_cost_effective, 'g-', label="Financial Stress (Cost-Effective)")
+ax1.set_xlabel("Time (Years)")
+ax1.set_ylabel("Financial Stress", color='red')
+ax1.tick_params(axis='y', labelcolor='red')
+ax1.legend(loc='upper left')
+
+# Create a second y-axis for quality of life
+ax2 = ax1.twinx()
+ax2.plot(time, quality_of_life_traditional, 'b--', label="Quality of Life (Traditional)")
+ax2.plot(time, quality_of_life_cost_effective, 'c--', label="Quality of Life (Cost-Effective)")
+ax2.set_ylabel("Quality of Life", color='blue')
+ax2.tick_params(axis='y', labelcolor='blue')
+ax2.legend(loc='lower right')
+
+# Add title and grid
+plt.title("Comparison of Quality of Life and Financial Stress in Therapy Models")
+plt.grid(True)
+
+# Display the plot in Streamlit
+st.pyplot(fig)
