@@ -61,7 +61,6 @@ st.title("🚀 ThriveX - The Future of Healing & Self-Mastery")
 st.write("Your AI-powered transformation hub. Real-time coaching, emotional diagnostics, and immersive healing experiences.")
 import random
 import string
-import pyperclip  # Import pyperclip for copying
 
 # Function to generate a short referral code
 def generate_referral_code():
@@ -71,29 +70,11 @@ def generate_referral_code():
 if "referral_code" not in st.session_state or not st.session_state["referral_code"]:
     st.session_state["referral_code"] = generate_referral_code()
 
-# Display referral code inside a text input (read-only)
+# Display referral code inside a text input (read-only, user can copy manually)
 st.text_input("Your Referral Code:", value=st.session_state["referral_code"], key="referral_display", disabled=True)
 
-# Single Copy Button
-if st.button("Copy Referral Code"):
-    pyperclip.copy(st.session_state["referral_code"])  # Copies only the referral code
-    st.success(f"Referral code copied: {st.session_state['referral_code']}")
-
-# Track referrals
-referred_by = st.text_input("Enter Referral Code (if any):")
-
-if st.button("Apply Referral Code"):
-    # Prevent self-referral
-    if referred_by == st.session_state["referral_code"]:
-        st.error("❌ You cannot use your own referral code.")
-    
-    # Validate format & store successful referrals
-    elif referred_by.startswith("THRIVEX-"):
-        st.session_state["referral_count"] += 1
-        st.success(f"✅ Referral code applied! You and your referrer both earn a 10% discount.")
-    
-    else:
-        st.error("❌ Invalid referral code. Make sure it's correctly entered.")
+# Show a message prompting users to copy manually
+st.markdown("**📋 Copy your referral code manually from the above box.**")
 
 # Subscription Model
 st.subheader("💳 ThriveX Subscription Plan")
