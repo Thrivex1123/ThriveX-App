@@ -185,7 +185,7 @@ openai.api_key = "YOUR_OPENAI_API_KEY"  # Replace with your actual API key
 
 def chat_with_ai(user_input):
     try:
-        client = openai.Client()  # Correctly initialize OpenAI Client
+        client = openai.Client()  # Initialize OpenAI Client correctly
         
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -198,11 +198,9 @@ def chat_with_ai(user_input):
         return ai_reply
 
     except Exception as e:
-        return f"⚠️ Error communicating with AI: {str(e)}"
-📌 Why this works:
-✔ Uses openai.Client() (correct method for OpenAI 1.0.0+)
-✔ Fixes openai.ChatCompletion deprecation issue
-✔ Ensures compatibility with OpenAI’s latest API
+        return f"Error communicating with AI: {str(e)}"
+
+
 
 
 # 🎯 Add ThriveX Functionalities
