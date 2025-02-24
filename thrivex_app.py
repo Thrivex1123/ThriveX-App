@@ -205,10 +205,24 @@ def analyze_mood(mood):
 
 # Function for AI chat interaction
 def chat_with_ai(user_input):
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": user_input}]
-    )
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": user_input}],
+            temperature=0.7
+        )
+
+        # Extract and return AI response
+        ai_reply = response["choices"][0]["message"]["content"]
+        return ai_reply
+
+    except openai.error.OpenAIError as e:
+        return "⚠️ Error communicating with AI: " + str(e)
+
+# Extract the AI's response
+ai_reply = response["choices"][0]["message"]["content"]
+return ai_reply
+
     return response["choices"][0]["message"]["content"]
 
 # 🎯 Add ThriveX Functionalities
