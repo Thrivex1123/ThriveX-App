@@ -216,7 +216,8 @@ def chat_with_ai(user_input):
         ai_reply = response["choices"][0]["message"]["content"]
         return ai_reply
 
-    except openai.error.OpenAIError as e:
+   except Exception as e:
+
         return f"⚠️ Error communicating with AI: {e}"
 
 # 🎯 Add ThriveX Functionalities
