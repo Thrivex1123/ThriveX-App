@@ -216,9 +216,8 @@ def chat_with_ai(user_input):
         ai_reply = response["choices"][0]["message"]["content"]
         return ai_reply
 
-   except Exception as e:
-
-        return f"⚠️ Error communicating with AI: {e}"
+    except Exception as e:  # Proper indentation
+        return f"⚠️ Error communicating with AI: {str(e)}"
 
 # 🎯 Add ThriveX Functionalities
 st.title("🚀 ThriveX - AI Healing & Self-Mastery")
