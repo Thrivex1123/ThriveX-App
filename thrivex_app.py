@@ -178,46 +178,32 @@ import streamlit as st
 import openai
 import random
 
-# Set OpenAI API Key
-openai.api_key = "YOUR_OPENAI_API_KEY"  # Replace with your OpenAI API key
+import openai
 
-# Function to get AI-generated affirmations
-def get_affirmation():
-    affirmations = [
-        "You are strong and capable of overcoming any obstacle.",
-        "You are enough, just as you are.",
-        "Every day, you are getting better and stronger.",
-        "Your potential is limitless, and you can achieve anything.",
-        "You are worthy of love, happiness, and success."
-    ]
-    return random.choice(affirmations)
+# Set your OpenAI API Key
+openai.api_key = "YOUR_OPENAI_API_KEY"  # Replace with your actual API key
 
-# Function for mood tracking
-def analyze_mood(mood):
-    responses = {
-        "Happy": "That's amazing! Keep spreading positivity! 😊",
-        "Sad": "I'm here for you. Try taking deep breaths and reminding yourself of good times. 💙",
-        "Stressed": "It's okay to take a break. Try meditating for a few minutes. 🧘‍♂️",
-        "Motivated": "Keep that energy! Go crush your goals! 🚀",
-        "Tired": "Your body is telling you to rest. Don't ignore it. 😴",
-    }
-    return responses.get(mood, "Your feelings are valid. Keep going. 💖")
-
-# Function for AI chat interaction
 def chat_with_ai(user_input):
     try:
-        response = openai.ChatCompletion.create(
+        client = openai.Client()  # Correctly initialize OpenAI Client
+        
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": user_input}],
             temperature=0.7
         )
 
         # Extract AI's response
-        ai_reply = response["choices"][0]["message"]["content"]
+        ai_reply = response.choices[0].message.content
         return ai_reply
 
-    except Exception as e:  # Proper indentation
+    except Exception as e:
         return f"⚠️ Error communicating with AI: {str(e)}"
+📌 Why this works:
+✔ Uses openai.Client() (correct method for OpenAI 1.0.0+)
+✔ Fixes openai.ChatCompletion deprecation issue
+✔ Ensures compatibility with OpenAI’s latest API
+
 
 # 🎯 Add ThriveX Functionalities
 st.title("🚀 ThriveX - AI Healing & Self-Mastery")
