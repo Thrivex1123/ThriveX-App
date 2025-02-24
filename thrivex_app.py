@@ -7,6 +7,16 @@ from datetime import datetime
 
 # Set up the page title and description
 st.set_page_config(page_title="ThriveX - AI Healing & Self-Mastery", layout="wide")
+# Function to analyze user mood and provide a response
+def analyze_mood(mood):
+    mood_responses = {
+        "Happy": "😊 That's great! Keep spreading positivity!",
+        "Sad": "😢 I'm here for you. Consider practicing self-care today.",
+        "Stressed": "😓 Take a deep breath. Try meditation or a short walk to clear your mind.",
+        "Motivated": "🚀 Awesome! Use this energy to achieve your goals.",
+        "Tired": "😴 Make sure to get enough rest and recharge yourself."
+    }
+    return mood_responses.get(mood, "🤖 I'm not sure how to interpret that mood, but I'm here for you!")
 
 # Initialize session state
 if "mood_history" not in st.session_state:
