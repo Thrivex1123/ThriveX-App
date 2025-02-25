@@ -5,6 +5,8 @@ import smtplib
 from email.mime.text import MIMEText
 from datetime import datetime
 
+pip install --upgrade openai
+
 # Set up the page title and description
 st.set_page_config(page_title="ThriveX - AI Healing & Self-Mastery", layout="wide")
 # Function to analyze user mood and provide a response
@@ -201,17 +203,21 @@ def get_affirmation():
 
 
 import openai
-import os
 
 openai.api_key = os.getenv("OPENAI_API_KEY")  # Fetch the key securely
 
-response = openai.ChatCompletion.create(
+from openai import OpenAI  # Import the new OpenAI client
+
+client = OpenAI(api_key="your_openai_api_key")  # Replace with your actual key
+
+response = client.chat.completions.create(
     model="gpt-4",
-    messages=[{"role": "user", "content": "Hello, AI!"}]
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": user_message},
+    ]
 )
 
-# Set OpenAI API Key (Replace with your actual key)
-openai.api_key = "your_openai_api_key_here"
 
 def chat_with_ai(user_input):
     try:
