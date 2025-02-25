@@ -199,7 +199,16 @@ def get_affirmation():
     ]
     return random.choice(affirmations)
 
+
 import openai
+import os
+
+openai.api_key = os.getenv("OPENAI_API_KEY")  # Fetch the key securely
+
+response = openai.ChatCompletion.create(
+    model="gpt-4",
+    messages=[{"role": "user", "content": "Hello, AI!"}]
+)
 
 # Set OpenAI API Key (Replace with your actual key)
 openai.api_key = "your_openai_api_key_here"
