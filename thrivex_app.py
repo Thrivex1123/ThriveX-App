@@ -201,15 +201,15 @@ def get_affirmation():
 
 import openai
 
-# Set your OpenAI API Key
-openai.api_key = "YOUR_OPENAI_API_KEY"  # Replace with your actual API key
+# Set OpenAI API Key (Replace with your actual key)
+openai.api_key = "your_openai_api_key_here"
 
 def chat_with_ai(user_input):
     try:
-        client = openai.Client()  # Initialize OpenAI Client correctly
+        client = openai.Client()  # Initialize OpenAI Client
         
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",  # Use GPT-4o for better responses
             messages=[{"role": "user", "content": user_input}],
             temperature=0.7
         )
@@ -219,7 +219,8 @@ def chat_with_ai(user_input):
         return ai_reply
 
     except Exception as e:
-        return f"Error communicating with AI: {str(e)}"
+        return f"⚠️ Error communicating with AI: {str(e)}"
+
 
 
 
