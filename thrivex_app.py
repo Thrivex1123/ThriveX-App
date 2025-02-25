@@ -202,7 +202,7 @@ def get_affirmation():
     return random.choice(affirmations)
 
 
-import openai
+
 
 openai.api_key = os.getenv("OPENAI_API_KEY")  # Fetch the key securely
 
