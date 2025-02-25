@@ -3,7 +3,7 @@ openai
 stripe
 matplotlib
 openai>=1.0.0
-import subprocess
+
 import sys
 
 # Ensure matplotlib is installed
