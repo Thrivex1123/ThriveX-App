@@ -1,10 +1,10 @@
 streamlit
-openai
+openai>=1.0.0
 stripe
 matplotlib
-openai>=1.0.0
-matplotlib
-
-
+pandas
+numpy
+scikit-learn
+requests
 
 
