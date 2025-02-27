@@ -1,5 +1,13 @@
-import streamlit as st
 import openai
+import streamlit as st
+
+# Manually set OpenAI API key
+import openai
+openai.api_key = 
+import streamlit a
+import openai
+import streamlit as st
+
 
 import stripe
 import random
