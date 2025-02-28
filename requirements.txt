@@ -1,10 +1,8 @@
 streamlit
-openai>=1.0.0
-stripe
-matplotlib
-pandas
+openai
 numpy
-scikit-learn
-requests
-
+speechrecognition
+librosa
+tensorflow
+scipy
 
