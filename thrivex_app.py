@@ -1,133 +1,60 @@
-import openai
 import streamlit as st
-
-# Manually set OpenAI API key
 import openai
-openai.api_key = 
-import streamlit a
-import openai
-import streamlit as st
-
-
-import stripe
-import random
-import string
-import matplotlib.pyplot as plt
 import numpy as np
+import speech_recognition as sr
+import librosa
+import tensorflow as tf
+import json
+from scipy.spatial.distance import cosine
+from datetime import datetime
 
-# Set up the page title
-st.set_page_config(page_title="ThriveX - AI Healing & Self-Mastery", layout="wide")
+# Initialize OpenAI API
+openai.api_key = "YOUR_OPENAI_API_KEY"
 
-# Load API key from Streamlit secrets
-openai.api_key = st.secrets["OPENAI_API_KEY"]
-stripe.api_key = "YOUR_STRIPE_SECRET_KEY"  # Replace with actual Stripe key
+# Load AI Emotion Analysis Model (Placeholder for ML model)
+def analyze_emotion_from_voice(audio_file):
+    # Placeholder - This would use an ML model like TensorFlow to analyze tone & stress
+    return np.random.choice(["Calm", "Happy", "Frustrated", "Stressed", "Excited"])
 
-# Initialize session state variables
-if "mood_history" not in st.session_state:
-    st.session_state["mood_history"] = []
-if "user_points" not in st.session_state:
-    st.session_state["user_points"] = 0
-if "subscription_status" not in st.session_state:
-    st.session_state["subscription_status"] = "Free Trial"
-if "trial_days_left" not in st.session_state:
-    st.session_state["trial_days_left"] = 7
-if "user_email" not in st.session_state:
-    st.session_state["user_email"] = ""
-if "referral_code" not in st.session_state:
-    st.session_state["referral_code"] = ""
+# Initialize Speech Recognizer
+recognizer = sr.Recognizer()
 
-# Function to generate a referral code
-def generate_referral_code():
-    return "THRIVEX-" + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-
-# Assign a referral code if not already created
-if not st.session_state["referral_code"]:
-    st.session_state["referral_code"] = generate_referral_code()
-
-# Daily Affirmations
-daily_affirmations = [
-    "You are enough, just as you are.",
-    "Your potential is limitless, and you can achieve anything.",
-    "Every day, you are getting better and stronger.",
-    "You are worthy of love, happiness, and success."
-]
-current_affirmation = random.choice(daily_affirmations)
-
-# Function to interact with OpenAI chatbot
-def chat_with_ai(user_message):
-    try:
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[{"role": "user", "content": user_message}]
-        )
-        return response["choices"][0]["message"]["content"]
-    except Exception as e:
-        return f"⚠️ Error communicating with AI: {str(e)}"
-
-# Financial Stress vs Quality of Life Chart
-def plot_comparison_chart():
-    years = np.arange(1, 11)
-    traditional_therapy_quality = np.log1p(years) * 20 + 40
-    traditional_therapy_stress = np.exp(0.2 * years) * 20
-    cost_effective_quality = np.linspace(40, 85, 10)
-    cost_effective_stress = np.linspace(40, 20, 10)
+def transcribe_audio():
+    with sr.Microphone() as source:
+        st.write("🎤 Speak now, ThriveX is listening...")
+        recognizer.adjust_for_ambient_noise(source)
+        audio = recognizer.listen(source)
     
-    fig, ax1 = plt.subplots()
-    ax2 = ax1.twinx()
-    ax1.plot(years, traditional_therapy_quality, label='Traditional - Quality', linestyle='--')
-    ax1.plot(years, cost_effective_quality, label='Cost-Effective - Quality', linestyle='-')
-    ax2.plot(years, traditional_therapy_stress, label='Traditional - Stress', linestyle='--', color='r')
-    ax2.plot(years, cost_effective_stress, label='Cost-Effective - Stress', linestyle='-', color='r')
-    ax1.set_xlabel("Years in Therapy")
-    ax1.set_ylabel("Quality of Life (Higher is Better)")
-    ax2.set_ylabel("Financial Stress (Lower is Better)")
-    ax1.legend(loc='upper left')
-    ax2.legend(loc='upper right')
-    st.pyplot(fig)
+    try:
+        text = recognizer.recognize_google(audio)
+        st.write(f"🗣️ You said: {text}")
+        return text
+    except sr.UnknownValueError:
+        st.write("❌ Could not understand audio")
+        return ""
+    except sr.RequestError:
+        st.write("⚠️ API unavailable")
+        return ""
 
-# ThriveX Branding
-st.title("🚀 ThriveX - The Future of Healing & Self-Mastery")
-st.write("Your AI-powered transformation hub. Real-time coaching, emotional diagnostics, and immersive healing experiences.")
+# Function to get AI Mentor Response
+def ai_mentor_response(user_input, emotion):
+    prompt = f"You are an AI mentor helping with personal growth. The user is feeling {emotion}. Provide motivation and actionable advice for their concern: {user_input}"  
+    response = openai.ChatCompletion.create(
+        model="gpt-4-turbo",
+        messages=[{"role": "system", "content": "You are a motivational AI coach."},
+                  {"role": "user", "content": prompt}]
+    )
+    return response['choices'][0]['message']['content']
 
-# Referral Program
-st.subheader("🎁 Refer & Earn Rewards!")
-st.write("Invite friends and earn a **10% discount** on your next month for every successful referral!")
-st.text_input("Your Referral Code:", value=st.session_state["referral_code"], disabled=True)
+# Streamlit UI
+st.title("🚀 ThriveX AI Mentor - Voice Emotion Analysis & Coaching")
+st.write("An AI-powered mentor that analyzes voice emotions & provides real-time coaching.")
 
-# Subscription Plan
-st.subheader("💳 ThriveX Subscription Plan")
-if st.session_state["trial_days_left"] > 0:
-    st.write(f"🎉 You are on a **7-day free trial**! Days left: {st.session_state['trial_days_left']}")
-else:
-    plan = st.radio("Choose your plan:", ["Basic - $9.99/month", "Pro - $19.99/month", "Elite - $29.99/month"])
-    price = float(plan.split("$")[1].split("/")[0])
-    if st.button("Subscribe Now"):
-        st.success(f"✅ Subscription successful! You are now on the {plan} plan.")
-
-# Mood Analysis
-st.subheader("🧠 How Are You Feeling Today?")
-mood = st.selectbox("Select your current mood:", ["Happy", "Sad", "Stressed", "Motivated", "Anxious"])
-if st.button("Analyze Mood"):
-    mood_response = f"Your mood is: {mood}. Remember, emotions are temporary and self-care is important!"
-    st.success(mood_response)
-
-# AI Chatbot
-st.subheader("💬 Talk to ThriveX AI")
-user_message = st.text_input("Type your message:")
-if st.button("Ask AI"):
-    ai_response = chat_with_ai(user_message)
-    st.write(f"🤖 AI: {ai_response}")
-
-# Daily Affirmation
-st.subheader("🌟 Daily Affirmation")
-st.write(f"✨ {current_affirmation} ✨")
-
-# Financial Stress vs. Quality of Life Chart
-st.subheader("📊 Financial Stress vs. Quality of Life: Therapy Models")
-plot_comparison_chart()
-
-# Beta Waitlist
-st.subheader("🚀 Be the First to Experience ThriveX")
-st.session_state["user_email"] = st.text_input("Enter your email to join the beta waitlist:")
-if st.button("Join Now"):
-    st.success("You're on the list! ThriveX Beta launch details will be sent soon.")
+# Voice Analysis Section
+if st.button("🎙️ Start Voice Analysis & Coaching"):
+    user_text = transcribe_audio()
+    if user_text:
+        detected_emotion = analyze_emotion_from_voice(user_text)
+        st.write(f"🧠 AI detected emotion: {detected_emotion}")
+        mentor_advice = ai_mentor_response(user_text, detected_emotion)
+        st.write(f"💡 AI Mentor: {mentor_advice}")
