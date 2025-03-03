@@ -8,8 +8,8 @@ import json
 from scipy.spatial.distance import cosine
 from datetime import datetime
 
-# Initialize OpenAI API
-openai.api_key = "YOUR_OPENAI_API_KEY"
+# Load API Key from Streamlit Secrets
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # Load AI Emotion Analysis Model (Placeholder for ML model)
 def analyze_emotion_from_voice(audio_file):
@@ -41,8 +41,10 @@ def ai_mentor_response(user_input, emotion):
     prompt = f"You are an AI mentor helping with personal growth. The user is feeling {emotion}. Provide motivation and actionable advice for their concern: {user_input}"  
     response = openai.ChatCompletion.create(
         model="gpt-4-turbo",
-        messages=[{"role": "system", "content": "You are a motivational AI coach."},
-                  {"role": "user", "content": prompt}]
+        messages=[
+            {"role": "system", "content": "You are a motivational AI coach."},
+            {"role": "user", "content": prompt}
+        ]
     )
     return response['choices'][0]['message']['content']
 
@@ -58,3 +60,16 @@ if st.button("🎙️ Start Voice Analysis & Coaching"):
         st.write(f"🧠 AI detected emotion: {detected_emotion}")
         mentor_advice = ai_mentor_response(user_text, detected_emotion)
         st.write(f"💡 AI Mentor: {mentor_advice}")
+✅ Updated requirements.txt (For Deployment)
+The developer will need to install dependencies, so include this requirements.txt file in GitHub:
+
+nginx
+Copy
+Edit
+streamlit
+openai
+numpy
+speechrecognition
+librosa
+tensorflow
+scipy
